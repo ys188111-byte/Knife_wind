@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발전소 대기오염물질 배출 현황 대시보드</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
+                    <i class="fa-solid fa-leaf text-emerald-500"></i>
+                    발전소 대기오염물질 배출 현황 대시보드
+                </h1>
+                <p class="text-slate-500 mt-2">분석 기간: 2022.01 ~ 2025.12 (48개월) | 대상: 7개 발전기 총 20개 호기</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex gap-4">
+                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-slate-200 text-sm font-medium">
+                    <span class="text-slate-500">총 데이터:</span> <span class="text-indigo-600 text-lg">1,488</span>건
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Section -->
+        <div class="mb-8 flex flex-col md:flex-row gap-6">
+            <div class="flex-1 bg-red-50 border-l-4 border-red-500 p-5 rounded-r-xl shadow-sm flex items-start gap-4">
+                <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl mt-1"></i>
+                <div>
+                    <h3 class="text-red-800 font-bold text-lg">질소산화물(NOx) 치명적 이상치 발견</h3>
+                    <p class="text-red-700 mt-1 text-sm leading-relaxed">
+                        질소산화물 평균 배출 농도 최대치가 <strong>399.95 ppm</strong>으로 기록되어, 최대 허용 기준인 <strong>200.0 ppm을 약 2배 초과</strong>하였습니다. 특정 호기의 저감 장치 고장 또는 심각한 데이터 기입 오류(Human Error)가 의심되므로 즉각적인 원인 조사가 필요합니다.
+                    </p>
+                </div>
+            </div>
+            <div class="flex-1 bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl shadow-sm flex items-start gap-4">
+                <i class="fa-solid fa-circle-exclamation text-amber-500 text-2xl mt-1"></i>
+                <div>
+                    <h3 class="text-amber-800 font-bold text-lg">데이터 결측치 주의</h3>
+                    <p class="text-amber-700 mt-1 text-sm leading-relaxed">
+                        총 1,488건 중 일부 배출 농도 데이터가 누락되었습니다.<br>
+                        • 질소산화물: <strong>24건</strong> / 이산화황: <strong>9건</strong> / 먼지: <strong>9건</strong><br>
+                        추후 정밀 예측 모델링을 위해 센서 상태 점검 및 결측치 대체(Imputation)가 요구됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- SOx Card -->
+            <div class="glass-card rounded-2xl p-6 transition hover:shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-slate-700">이산화황 (SOx)</h2>
+                    <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">매우 양호</span>
+                </div>
+                <div class="flex items-end gap-2 mb-2">
+                    <span class="text-4xl font-bold text-slate-900">2.67</span>
+                    <span class="text-slate-500 pb-1">ppm (평균)</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2 mt-4 mb-2">
+                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 8.6%"></div>
+                </div>
+                <p class="text-sm text-slate-600 flex justify-between">
+                    <span>허용기준: 30.95 ppm</span>
+                    <span class="font-semibold text-emerald-600">기준대비 8.6%</span>
+                </p>
+            </div>
+
+            <!-- Dust Card -->
+            <div class="glass-card rounded-2xl p-6 transition hover:shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-slate-700">먼지 (Dust)</h2>
+                    <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">매우 양호</span>
+                </div>
+                <div class="flex items-end gap-2 mb-2">
+                    <span class="text-4xl font-bold text-slate-900">1.07</span>
+                    <span class="text-slate-500 pb-1">mg/Sm³ (평균)</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2 mt-4 mb-2">
+                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 10.0%"></div>
+                </div>
+                <p class="text-sm text-slate-600 flex justify-between">
+                    <span>허용기준: 10.73 mg/Sm³</span>
+                    <span class="font-semibold text-emerald-600">기준대비 10.0%</span>
+                </p>
+            </div>
+
+            <!-- NOx Card -->
+            <div class="glass-card rounded-2xl p-6 border-t-4 border-t-red-500 transition hover:shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-slate-700">질소산화물 (NOx)</h2>
+                    <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">이상치 포함</span>
+                </div>
+                <div class="flex items-end gap-2 mb-2">
+                    <span class="text-4xl font-bold text-slate-900">19.42</span>
+                    <span class="text-slate-500 pb-1">ppm (평균)</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2 mt-4 mb-2">
+                    <div class="bg-amber-500 h-2 rounded-full" style="width: 45.4%"></div>
+                </div>
+                <p class="text-sm text-slate-600 flex justify-between">
+                    <span>허용기준: 42.79 ppm</span>
+                    <span class="font-semibold text-amber-600">기준대비 45.4%</span>
+                </p>
+                <div class="mt-3 bg-red-50 p-2 rounded text-xs text-red-600 font-medium">
+                    <i class="fa-solid fa-arrow-trend-up mr-1"></i> 최대 배출량: 399.95 ppm (기준초과)
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Bar Chart: Emission vs Limits -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">물질별 평균 배출 농도 vs 허용 기준</h3>
+                <div class="relative h-72 w-full">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Radar/Doughnut Chart: Missing Data Ratio -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">배출 농도 데이터 무결성 (결측치 현황)</h3>
+                <div class="relative h-72 w-full flex justify-center">
+                    <canvas id="missingDataChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-slate-500 mt-2">전체 1,488건 기준 정상 수집 데이터 비율</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart configuration defaults
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.scale.grid.color = 'rgba(226, 232, 240, 0.5)';
+
+        // 1. Comparison Bar Chart
+        const ctxComparison = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(ctxComparison, {
+            type: 'bar',
+            data: {
+                labels: ['이산화황(SOx)', '먼지(Dust)', '질소산화물(NOx)'],
+                datasets: [
+                    {
+                        label: '평균 배출 농도',
+                        data: [2.67, 1.07, 19.42],
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)', // Blue
+                        borderRadius: 6,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.8
+                    },
+                    {
+                        label: '평균 허용 기준치',
+                        data: [30.95, 10.73, 42.79],
+                        backgroundColor: 'rgba(203, 213, 225, 0.6)', // Slate
+                        borderRadius: 6,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { usePointStyle: true, boxWidth: 8 }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '수치 (ppm 또는 mg/Sm³)' }
+                    }
+                }
+            }
+        });
+
+        // 2. Missing Data Doughnut Chart
+        const ctxMissing = document.getElementById('missingDataChart').getContext('2d');
+        new Chart(ctxMissing, {
+            type: 'doughnut',
+            data: {
+                labels: ['정상 데이터 (질소산화물 기준)', '질소산화물 결측 (24건)', '이산화황/먼지 결측 (각 9건)'],
+                datasets: [{
+                    data: [1464, 24, 9],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)', // Emerald
+                        'rgba(244, 63, 94, 0.8)',  // Rose
+                        'rgba(245, 158, 11, 0.8)'   // Amber
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            usePointStyle: true, 
+                            padding: 20,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) { label += ': '; }
+                                label += context.parsed + '건';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
